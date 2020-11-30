@@ -5,7 +5,7 @@ import nivel1.*
 class Mesa {
 	
 	var property mazoJugada = null
-	
+	var property totalCartas = null
 	var property cartaPropia1 = null
 	var property cartaPropia2 = null
 	var property cartaPropia3 = null
@@ -78,6 +78,8 @@ class Mesa {
 		game.addVisual(cartaRival2)
 		game.addVisual(cartaRival3)
 		
+		totalCartas = [cartaPropia1, cartaPropia2, cartaPropia3, cartaRival1, cartaRival2, cartaRival3]
+		
 		soyMano = false
 	}
 	method repartirCartasRival(mazo){
@@ -119,57 +121,59 @@ class Mesa {
 		game.addVisual(cartaRival3)
 		
 		soyMano = true
+		
+		totalCartas = [cartaPropia1, cartaPropia2, cartaPropia3, cartaRival1, cartaRival2, cartaRival3]
+		
+		self.jugarPrimeraCartaRival()
 	}
 	
 	
 	// acciones
-	
+	method irseAlMazoYRepartir(mazo){
+		totalCartas.forEach({carta => game.removeVisual(carta)})
+		
+		self.mezclar(mazo)
+	}
 	method jugarPrimerCartaPropia(){
-		if(cartaPropia1.enManoPropia()){
+		if(cartaPropia1.enManoPropia() or not cartaRival1.enManoRival()){
 		cartaPropia1.position(positionMesaPropia1)
 		cartaPropia1.enManoPropia(false)
+		self.jugarPrimeraCartaRival()
 		}
 	}
 	
 	method jugarSegundaCartaPropia(){
-		if(cartaPropia2.enManoPropia()){
+		if(cartaPropia2.enManoPropia() or cartaRival2.enManoRival()){
 		cartaPropia2.position(positionMesaPropia2)
 		cartaPropia2.enManoPropia(false)
+		self.jugarSegundaCartaRival()
 		}
 	}
 	
 	method jugarTercerCartaPropia(){
-		if(cartaPropia3.enManoPropia()){
+		if(cartaPropia3.enManoPropia() or cartaRival3.enManoRival()){
 		cartaPropia3.position(positionMesaPropia3)
 		cartaPropia3.enManoPropia(false)
+		self.jugarTerceraCartaRival()
 		}
 	}
 	
-	method jugarCartaPrimeraCartaRival1(){
-		game.getObjectsIn(positionManoRival1).first().enManoRival(false)
-		game.getObjectsIn(positionManoPropia2).first().position(positionMesaRival1)
+	method jugarPrimeraCartaRival(){
+		
+		cartaRival1.enManoRival(false)
+		cartaRival1.position(positionMesaRival1)
+		
 	}
-	method jugarCartaPrimeraCartaRival2(){
-		game.getObjectsIn(positionManoRival2).first().enManoRival(false)
-		game.getObjectsIn(positionManoPropia2).first().position(positionMesaRival2)
+	method jugarSegundaCartaRival(){
+		cartaRival2.enManoRival(false)
+		cartaRival2.position(positionMesaRival2)
+		
 	}
-	method jugarCartaPrimeraCartaRival3(){
-		game.getObjectsIn(positionManoRival2).first().enManoRival(false)
-		game.getObjectsIn(positionManoPropia2).first().position(positionMesaRival3)
-	}
-	
-	// cartas a partir de su lugar
-	
-	method cartaMano1(){
-		return game.getObjectsIn(positionManoPropia1).first()
-	}
-	method cartaMano2(){
-		return game.getObjectsIn(positionManoPropia2).first()
-	}
-	method cartaMano3(){
-		return game.getObjectsIn(positionManoPropia3).first()
-	}
-			
+	method jugarTerceraCartaRival(){
+		cartaRival3.enManoRival(false)
+		cartaRival3.position(positionMesaRival3)
+		
+	}		
 }
 
 object boton1{
