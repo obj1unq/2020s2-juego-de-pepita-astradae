@@ -1,0 +1,19 @@
+import nivel1.*
+import wollok.game.*
+import mesa.*
+
+
+program PepitaGame {
+	
+	game.title("Pepita")
+	game.height(16)
+	game.width(16)
+
+	nivel1.config()
+	nivel1.armarJugada()
+	game.addVisual(boton1)
+	game.addVisual(boton2)
+	game.addVisual(boton3)
+	game.start()
+	
+}
