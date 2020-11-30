@@ -3,12 +3,15 @@ import comidas.*
 import extras.*
 import wollok.game.*
 
+ const cartaUnoEsp = new Carta(image = "Uno_de_Espadas.png" , position = game.center())
+ 
 object tutorial1 {
 
 	method iniciar() {
 		game.addVisual(nido)
 		game.addVisual(silvestre)
 		game.addVisualCharacter(pepita)
+		game.addVisual(cartaUnoEsp)
 	}
 
 }

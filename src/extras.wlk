@@ -1,6 +1,9 @@
 import pepita.*
 import wollok.game.*
-
+class Carta {
+	var property image
+	var property position
+}
 object nido {
 
 	var property position = game.at(7, 8)
