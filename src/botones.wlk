@@ -3,7 +3,6 @@ import items.*
 import mesa.*
 
 class Boton {
-	
 	const property position
 	const property image
 	const property lugarItem
@@ -23,5 +22,18 @@ class Boton {
 		listaItems.add(game.getObjectsIn(lugarItem).first())
 		game.removeVisual(game.getObjectsIn(lugarItem).first())
 		}
+	}
+	
+	method agregarItemSiTieneMana(personaje){
+		if (self.hayItemsEnBoton() and personaje.tieneManaParaUsar(self.itemEnBoton())){
+			personaje.bajarMana(self.itemEnBoton())
+			self.usarItem(self.itemEnBoton() , personaje)
+		}
+	}
+	method hayItemsEnBoton(){
+		return not game.getObjectsIn(self.lugarItem()).isEmpty()
+	}
+	method itemEnBoton(){
+		return game.getObjectsIn(self.lugarItem()).first()
 	}
 }

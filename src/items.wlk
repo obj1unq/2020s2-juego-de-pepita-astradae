@@ -11,34 +11,40 @@ class Item {
 	method bajarUso(){
 		usos -= 1
 	}
+	method usarEfectoEspecial(personaje){
+		if(efectoEspecial){
+			self.realizarEfectoEspecial(personaje)
+		}
+	}
+	method realizarEfectoEspecial(personaje)
 }
 
 class ChoriYCoca inherits Item {
-	method realizarEfectoEspecial(personaje){
+	override method realizarEfectoEspecial(personaje){
 		personaje.curar(5)
 	}
 }
 
 class Ensalada inherits Item {
-	method realizarEfectoEspecial(personaje){
+	override method realizarEfectoEspecial(personaje){
 		personaje.curar(7)
 	}
 }
 
 class Parrillada inherits Item {
-	method realizarEfectoEspecial(personaje){
+	override method realizarEfectoEspecial(personaje){
 		personaje.curar(10)
 	}
 }
 
 class ComidaVegan inherits Item {
-	method realizarEfectoEspecial(personaje){
+	override method realizarEfectoEspecial(personaje){
 		personaje.curar(12)
 	}
 }
 
 class PlatoVegano inherits Item {
-	method realizarEfectoEspecial(personaje){
+	override method realizarEfectoEspecial(personaje){
 		personaje.curar(15)
 	}
 }

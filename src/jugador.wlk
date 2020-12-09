@@ -17,13 +17,22 @@ class Jugador {
 		items.add(item)	
 		}
 	method realizarTurno(enemigo ,listaItems){
+		self.agregarAtaqueYDefenzaDeItems(listaItems)
+		self.usarItemsEspeciales()
+		self.atacar(enemigo)
+	}
+	method agregarAtaqueYDefenzaDeItems(listaItems){
 		if (not items.isEmpty()){
-			ataque = self.sumaAtaque(listaItems)
-			defenza = self.sumaDefenza(listaItems)
+			self.ataque(self.sumaAtaque(items))
+			self.defenza(self.sumaDefenza(items))
 			items.forEach({item => self.removerSinUsos(item ,listaItems)})
 			items.forEach({item => item.bajarUso()})
 		}
-		self.atacar(enemigo)
+	}
+	method usarItemsEspeciales(){
+		if (not items.isEmpty()){
+			items.forEach({item => item.usarEfectoEspecial(self)})
+		}
 	}
 	method sumaAtaque(listaItems){
 		var ataqueTotal = 0
@@ -51,6 +60,15 @@ class Jugador {
 			items.remove(item)
 			listaItems.add(item)
 		}
+	}
+	method tieneManaParaUsar(item){
+		return item.mana() < puntosDeMana
+	}
+	method bajarMana(item){
+		puntosDeMana -= item.mana()
+	}
+	method agregarMana(cantidad){
+		puntosDeMana += cantidad
 	}
 }
 
@@ -90,5 +108,13 @@ class CantidadDefenza {
 	
 	method mostrarDefenza(defenza){
 		game.say(self , defenza.printString())
+	}
+}
+class CantidadMana {
+	const property image = "mana.jpg"
+	const property position
+	
+	method mostrarMana(mana){
+		game.say(self , mana.printString())
 	}
 }
