@@ -1,0 +1,19 @@
+import nivel1.*
+import wollok.game.*
+import mesa.*
+
+
+program MortalWollok {
+	
+	
+	game.title("MortalWollok")
+	game.height(10)
+	game.width(16)
+	game.boardGround("escenario.jpg")
+	mesa.visualesInfo()
+	nivel1.config()
+	nivel1.jugar()
+	
+	game.start()
+	
+}

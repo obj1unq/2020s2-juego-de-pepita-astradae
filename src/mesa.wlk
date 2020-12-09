@@ -1,190 +1,78 @@
 import wollok.game.*
-import cartas.*
+import jugador.*
+import contador.*
 import nivel1.*
+import botones.*
 
-class Mesa {
+object mesa {
 	
-	var property mazoJugada = null
-	var property totalCartas = null
-	var property cartaPropia1 = null
-	var property cartaPropia2 = null
-	var property cartaPropia3 = null
-	var property cartaRival1 = null
-	var property cartaRival2 = null
-	var property cartaRival3 = null
+	var property numeroDeRonda = 0
 	
-	var property soyMano = true
+	const vidaJ1 = new CantidadVida(position = game.at(2,9))
+	const ataqueJ1 = new CantidadAtaque(position = game.at(4,9))
+	const defenzaJ1 = new CantidadDefenza (position = game.at(6,9))
 	
-	const property positionManoPropia1 = game.at(1,1)
-	const property positionManoPropia2 = game.at(5,1)
-	const property positionManoPropia3 = game.at(9,1)
+	const vidaJ2 = new CantidadVida(position = game.at(9,9))
+	const ataqueJ2 = new CantidadAtaque(position = game.at(11,9))
+	const defenzaJ2 = new CantidadDefenza(position = game.at(13,9))
 	
-	
-	const property positionManoRival1 = game.at(1,12)
-	const property positionManoRival2 = game.at(5,12)
-	const property positionManoRival3 = game.at(9,12)
-	
-	const property positionMesaPropia1 = game.at(1,5)
-	const property positionMesaPropia2 = game.at(5,5)
-	const property positionMesaPropia3 = game.at(9,5)
-	
-	const property positionMesaRival1 = game.at(1,9)
-	const property positionMesaRival2 = game.at(5,9)
-	const property positionMesaRival3 = game.at(9,9)
-	
-	
-	// setup
-	method mezclar(mazo){
-		if(soyMano) {self.repartirCartasPropia(mazo)} else {self.repartirCartasRival(mazo)}
+	method jugarRonda(listaDeItems , listaDeBotones , jugador1 , jugador2){
+		game.onTick(10000, "jugada", {self.realizarMovimientos(jugador1 , jugador2 , listaDeItems , listaDeBotones)})
+		//contador.iniciarCuenta()
+		numeroDeRonda += 1
 	}
 	
-	method repartirCartasPropia(mazo){
-		
-		self.mazoJugada(mazo)
-		
-		self.cartaRival1(mazoJugada.anyOne())
-		mazoJugada.remove(cartaRival1)
-		self.cartaRival1().enManoRival(true)
-		self.cartaRival1().position(positionManoRival1)
-		
-		self.cartaPropia1(mazoJugada.anyOne())
-		mazoJugada.remove(cartaPropia1)
-		self.cartaPropia1().position(positionManoPropia1)
-		self.cartaPropia1().enManoPropia(true)
-		
-		self.cartaRival2(mazoJugada.anyOne())
-		mazoJugada.remove(cartaRival2)
-		self.cartaRival2().enManoRival(true)
-		self.cartaRival2().position(positionManoRival2)
-		
-		self.cartaPropia2(mazoJugada.anyOne())
-		mazoJugada.remove(cartaPropia2)
-		self.cartaPropia2().position(positionManoPropia2)
-		self.cartaPropia2().enManoPropia(true)
-		
-		self.cartaRival3(mazoJugada.anyOne())
-		mazoJugada.remove(cartaRival3)
-		self.cartaRival3().enManoRival(true)
-		self.cartaRival3().position(positionManoRival3)
-		
-		self.cartaPropia3(mazoJugada.anyOne())
-		self.cartaPropia3().position(positionManoPropia3)
-		self.cartaPropia3().enManoPropia(true)
-		
-		game.addVisual(cartaPropia1)
-		game.addVisual(cartaPropia2)
-		game.addVisual(cartaPropia3)
-		game.addVisual(cartaRival1)
-		game.addVisual(cartaRival2)
-		game.addVisual(cartaRival3)
-		
-		totalCartas = [cartaPropia1, cartaPropia2, cartaPropia3, cartaRival1, cartaRival2, cartaRival3]
-		
-		soyMano = false
-	}
-	method repartirCartasRival(mazo){
-		
-		self.mazoJugada(mazo)
-		
-		self.cartaPropia1(mazoJugada.anyOne())
-		mazoJugada.remove(cartaPropia1)
-		self.cartaPropia1().position(positionManoPropia1)
-		
-		
-		self.cartaRival1(mazoJugada.anyOne())
-		mazoJugada.remove(cartaRival1)
-		self.cartaRival1().enManoRival(true)
-		self.cartaRival1().position(positionManoRival1)
-		
-		self.cartaPropia2(mazoJugada.anyOne())
-		mazoJugada.remove(cartaPropia2)
-		self.cartaPropia2().position(positionManoPropia2)
-		
-		self.cartaRival2(mazoJugada.anyOne())
-		mazoJugada.remove(cartaRival2)
-		self.cartaRival2().enManoRival(true)
-		self.cartaRival2().position(positionManoRival2)
-		
-		self.cartaPropia3(mazoJugada.anyOne())
-		mazoJugada.remove(cartaPropia3)
-		self.cartaPropia3().position(positionManoPropia3)
-		
-		self.cartaRival3(mazoJugada.anyOne())
-		self.cartaRival3().enManoRival(true)
-		self.cartaRival3().position(positionManoRival3)
-		
-		game.addVisual(cartaPropia1)
-		game.addVisual(cartaPropia2)
-		game.addVisual(cartaPropia3)
-		game.addVisual(cartaRival1)
-		game.addVisual(cartaRival2)
-		game.addVisual(cartaRival3)
-		
-		soyMano = true
-		
-		totalCartas = [cartaPropia1, cartaPropia2, cartaPropia3, cartaRival1, cartaRival2, cartaRival3]
-		
-		self.jugarPrimeraCartaRival()
+	method visualesInfo(){
+		game.addVisual(vidaJ1)
+		game.addVisual(vidaJ2)
+		game.addVisual(ataqueJ1)
+		game.addVisual(ataqueJ2)
+		game.addVisual(defenzaJ1)
+		game.addVisual(defenzaJ2)
 	}
 	
-	
-	// acciones
-	method irseAlMazoYRepartir(mazo){
-		totalCartas.forEach({carta => game.removeVisual(carta)})
-		
-		self.mezclar(mazo)
+	method agregarItemALosJugadores(listaDeItems , listaDeBotones){
+		listaDeBotones.forEach({boton => boton.agregarItem(listaDeItems.anyOne() , listaDeItems)})
 	}
-	method jugarPrimerCartaPropia(){
-		if(cartaPropia1.enManoPropia() or not cartaRival1.enManoRival()){
-		cartaPropia1.position(positionMesaPropia1)
-		cartaPropia1.enManoPropia(false)
-		self.jugarPrimeraCartaRival()
+	method realizarMovimientos(jugador1 , jugador2 , listaDeItems , listaDeBotones){
+		
+		self.agregarItemALosJugadores(listaDeItems , listaDeBotones)
+		
+		if((jugador1.vida() > 0) and  (jugador2.vida() > 0)){
+			
+			vidaJ1.mostrarVida(jugador1.vida())
+			vidaJ2.mostrarVida(jugador2.vida())
+			ataqueJ1.mostrarAtaque(jugador1.ataque())
+			ataqueJ2.mostrarAtaque(jugador2.ataque())
+			defenzaJ1.mostrarDefenza(jugador1.defenza())
+			defenzaJ2.mostrarDefenza(jugador2.defenza())
+			
+			jugador1.realizarTurno(jugador2 , listaDeItems)
+			jugador2.realizarTurno(jugador1 , listaDeItems)
+			
+			game.schedule(8000, {self.sacarItemsALosJugadores(listaDeBotones , listaDeItems)})
+			
+		}  else if(jugador1.vida() < 1) {
+			game.removeTickEvent("jugada")
+			game.clear()
+			game.addVisual(victoria2)
+		} else if (jugador2.vida() < 1){
+			game.removeTickEvent("jugada")
+			game.clear()
+			game.addVisual(victoria1)
 		}
-	}
-	
-	method jugarSegundaCartaPropia(){
-		if(cartaPropia2.enManoPropia() or cartaRival2.enManoRival()){
-		cartaPropia2.position(positionMesaPropia2)
-		cartaPropia2.enManoPropia(false)
-		self.jugarSegundaCartaRival()
-		}
-	}
-	
-	method jugarTercerCartaPropia(){
-		if(cartaPropia3.enManoPropia() or cartaRival3.enManoRival()){
-		cartaPropia3.position(positionMesaPropia3)
-		cartaPropia3.enManoPropia(false)
-		self.jugarTerceraCartaRival()
-		}
-	}
-	
-	method jugarPrimeraCartaRival(){
-		
-		cartaRival1.enManoRival(false)
-		cartaRival1.position(positionMesaRival1)
 		
 	}
-	method jugarSegundaCartaRival(){
-		cartaRival2.enManoRival(false)
-		cartaRival2.position(positionMesaRival2)
-		
+	method sacarItemsALosJugadores(listaDeBotones , listaItems){
+		listaDeBotones.forEach({boton => boton.sacarItem(listaItems)})
 	}
-	method jugarTerceraCartaRival(){
-		cartaRival3.enManoRival(false)
-		cartaRival3.position(positionMesaRival3)
-		
-	}		
 }
 
-object boton1{
-	const property image = "1.png"
-	const property position = game.at(2,0)
+object victoria1{
+	const property image = "victoria1.png"
+	const property position = game.origin()
 }
-object boton2{
-	const property image = "2.png"
-	const property position = game.at(6,0)
-}
-object boton3{
-	const property image = "3.png"
-	const property position = game.at(10,0)
+object victoria2{
+	const property image = "victoria2.png"
+	const property position = game.origin()
 }
